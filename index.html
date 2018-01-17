@@ -1,0 +1,50 @@
+<!doctype html>
+<html charset="utf-8" ng-app="feedApp">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Sky feed</title>
+  <link rel="stylesheet" href="https://sky.blackbaudcdn.net/skyux/1.19.1/css/sky-bundle.css" integrity="sha384-rCHAZzIqFLwC6z0rrDMyjB4UNDV5LX7dkYYVMNba0hMetsGOLkd0WXF7DZYjzWkh" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <bb-navbar>
+    <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="bb-navbar-active"><a href="">Feed</a></li>
+        <li><a href="https://github.com/brianbianchi/angularjs-feed">Code</a></li>
+      </ul>
+    </div>
+  </bb-navbar>
+  
+  <h2>Feed</h2>
+  <div class="container-fluid bb-page-content" ng-controller="FeedController as ctr">
+    <span>You are currently subscribed to {{ctr.subs.length}} pages</span>
+    <ul class="unstyled">
+      <li ng-repeat="sub in ctr.subs">
+        <label>
+          <span class="">{{sub.source}}</span>
+          <input type="button" ng-click="ctr.removeFeed(sub)" value="remove">
+        </label>
+      </li>
+    </ul>
+    <form ng-submit="ctr.addFeed()">
+      <input type="text" ng-model="ctr.feedUrl"  size="30"
+      placeholder="add new rss feed url here">
+      <input class="btn-primary" type="submit" value="add">
+    </form>
+
+    <div class="row-fluid" ng-repeat="page in ctr.pages">
+      <ul class="unstyled">
+        <li ng-repeat="element in page">                    
+          <h5><a>{{element.title}}</a></h5>
+          <p class="text-left">{{element.description}}</p>                    
+          <span class="small">{{element.pubDate}}</span>
+        </li>                
+      </ul>            
+    </div>
+  </div>
+
+  <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
+  <script src="feed.js"></script>
+</body>
+</html>
