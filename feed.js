@@ -1,7 +1,7 @@
 (function (angular){
   'use strict';
 
-  angular.module('feedApp', ['sky'])
+  angular.module('feedApp', ['sky', 'ngSanitize'])
   .controller('FeedController', ['FeedService', function(Feed) {
     var feed = this;
     feed.subs = [
@@ -42,7 +42,7 @@
   angular.module('feedApp').factory('FeedService', ['$http', function ($http) {
     return {
       parseFeed: function (url) {
-        return $http.jsonp('http://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url)).then(function (res) {
+        return $http.jsonp('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url)).then(function (res) {
           return res.data;
         })
         .catch(function (err) {console.log(err); return null;});

@@ -37,7 +37,7 @@
       <ul class="unstyled">
         <li ng-repeat="element in page">                    
           <h5><a>{{element.title}}</a></h5>
-          <p class="text-left">{{element.description}}</p>                    
+          <p class="text-left" ng-bind-html="element.description"></p>                    
           <span class="small">{{element.pubDate}}</span>
         </li>                
       </ul>            
@@ -45,6 +45,7 @@
   </div>
 
   <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.min.js"></script>
   <script src="feed.js"></script>
 </body>
 </html>
