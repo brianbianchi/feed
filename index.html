@@ -8,7 +8,7 @@
 </head>
 <body>
   <bb-navbar>
-    <div class="container-fluid">
+    <div class="container-fluid col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
       <ul class="nav navbar-nav navbar-left">
         <li class="bb-navbar-active"><a href="">Feed</a></li>
         <li><a href="https://github.com/brianbianchi/angularjs-feed">Code</a></li>
@@ -16,7 +16,7 @@
     </div>
   </bb-navbar>
   
-  <div class="container-fluid bb-page-content" class="col-sm-12" ng-controller="FeedController as ctr">
+  <div class="container-fluid bb-page-content col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="FeedController as ctr">
     <h2>Feed</h2>
     <span>You are currently subscribed to {{ctr.subs.length}} pages</span>
     <ul class="list-unstyled">
@@ -36,7 +36,7 @@
     <br><br><hr><br>
 
     <div class="row-fluid" ng-repeat="page in ctr.pages">
-      <div class="col-sm-12">
+      <div>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><a href="{{page.feed.url}}">{{page.feed.title}}</a></h3>
