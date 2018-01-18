@@ -16,10 +16,10 @@
     </div>
   </bb-navbar>
   
-  <h2>Feed</h2>
-  <div class="container-fluid bb-page-content" ng-controller="FeedController as ctr">
+  <div class="container-fluid bb-page-content" class="col-sm-12" ng-controller="FeedController as ctr">
+    <h2>Feed</h2>
     <span>You are currently subscribed to {{ctr.subs.length}} pages</span>
-    <ul class="unstyled">
+    <ul class="list-unstyled">
       <li ng-repeat="sub in ctr.subs">
         <label>
           <span class="">{{sub.source}}</span>
@@ -33,19 +33,26 @@
       <input class="btn-primary" type="submit" value="add">
     </form>
 
-    <div class="row-fluid" ng-repeat="page in ctr.pages">
-      <ul class="unstyled">
-        <li ng-repeat="element in page">                    
-          <h5><a>{{element.title}}</a></h5>
-          <p class="text-left" ng-bind-html="element.description"></p>                    
-          <span class="small">{{element.pubDate}}</span>
-        </li>                
-      </ul>            
-    </div>
-  </div>
+    <br><br><hr><br>
 
-  <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.min.js"></script>
-  <script src="feed.js"></script>
-</body>
-</html>
+    <div class="row-fluid" ng-repeat="page in ctr.pages">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><a href="{{page.feed.url}}">{{page.feed.title}}</a></h3>
+          </div>
+          <div class="panel-body" ng-repeat="element in page.items">
+            <p><a href="{{element.link}}">{{element.title}}</a>
+              <!--<p class="text-left" ng-bind-html="element.description"></p>-->
+              <br><span class="small">{{element.pubDate}}</span>
+              <br><span class="small">Author: {{element.author}}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.min.js"></script>
+      <script src="feed.js"></script>
+    </body>
+    </html>
