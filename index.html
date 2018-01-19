@@ -12,6 +12,7 @@
       <ul class="nav navbar-nav navbar-left">
         <li class="bb-navbar-active"><a href="">Feed</a></li>
         <li><a href="https://github.com/brianbianchi/angularjs-feed">Code</a></li>
+        <li><a href="https://skyux.developer.blackbaud.com/">SKY UX</a></li>
       </ul>
     </div>
   </bb-navbar>
@@ -36,11 +37,13 @@
     <br><br><hr><br>
 
     <div class="row-fluid" ng-repeat="page in ctr.pages">
-      <div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><a href="{{page.feed.url}}">{{page.feed.title}}</a></h3>
-          </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title" data-toggle="collapse" data-target="#{{'e'+$index}}">
+            <a href="{{page.feed.url}}">{{page.feed.title}}</a>
+          </h3>
+        </div>
+        <div id="{{'e'+$index}}" class="collapse in">
           <div class="panel-body" ng-repeat="element in page.items">
             <p><a href="{{element.link}}">{{element.title}}</a>
               <!--<p class="text-left" ng-bind-html="element.description"></p>-->
