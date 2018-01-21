@@ -17,38 +17,77 @@
     </div>
   </bb-navbar>
   
+
+
   <div class="container-fluid bb-page-content col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="FeedController as ctr">
-    <h2>Feed</h2>
-    <span>You are currently subscribed to {{ctr.subs.length}} pages</span>
-    <ul class="list-unstyled">
-      <li ng-repeat="sub in ctr.subs">
-        <label>
-          <span class="">{{sub.source}}</span>
-          <input type="button" ng-click="ctr.removeFeed(sub)" value="remove">
-        </label>
-      </li>
-    </ul>
-    <form ng-submit="ctr.addFeed()">
-      <input type="text" ng-model="ctr.feedUrl"  size="30"
-      placeholder="add new rss feed url here">
-      <input class="btn-primary" type="submit" value="add">
-    </form>
 
-    <br><br><hr><br>
+    <div class="text-center">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Configure Subscriptions </button>
+    </div>
 
-    <div class="row-fluid" ng-repeat="page in ctr.pages">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-toggle="collapse" data-target="#{{'e'+$index}}">
-            <a href="{{page.feed.url}}">{{page.feed.title}}</a>
-          </h3>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalLabel">Subscriptions</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h2>Current</h2>
+              <div ng-repeat="sub in ctr.subs">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="ctr.removeFeed(sub, 'subs')"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                  </span>
+                  <span class="">&nbsp;&nbsp;&nbsp;{{sub.title}}</span>
+                </div>
+              </div>
+              <form ng-submit="ctr.addFeed(ctr.feedUrl)">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                  </span>
+                  <input type="text" class="form-control" ng-model="ctr.feedUrl"  size="30" placeholder="add custom rss url here">
+                </div>
+              </form> 
+            </div>
+            <div class="modal-footer">
+              <h2>Popular</h2>
+              <div ng-repeat="page in ctr.popular">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="ctr.addFeed(page.url)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                  </span>
+                  <span class="">&nbsp;&nbsp;&nbsp;{{page.title}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="{{'e'+$index}}" class="collapse in">
-          <div class="panel-body" ng-repeat="element in page.items">
-            <p><a href="{{element.link}}">{{element.title}}</a>
-              <!--<p class="text-left" ng-bind-html="element.description"></p>-->
-              <br><span class="small">{{element.pubDate}}</span>
-              <br><span class="small">Author: {{element.author}}</span></p>
+      </div>
+
+      <br><br><hr><br>
+
+      <div class="row-fluid" ng-repeat="page in ctr.pages">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#{{'e'+$index}}">
+              <a href="{{page.feed.link}}">{{page.feed.title}}</a>
+              <span class="glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
+            </h3>
+          </div>
+          <div id="{{'e'+$index}}" class="collapse in">
+            <div class="panel-body" ng-repeat="element in page.items">
+              <p><a href="{{element.link}}">{{element.title}}</a>
+                <!--<p class="text-left" ng-bind-html="element.description"></p>-->
+                <br><span class="small">{{element.pubDate}}</span>
+                <br><span class="small">Author: {{element.author}}</span></p>
+              </div>
             </div>
           </div>
         </div>
