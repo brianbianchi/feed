@@ -50,8 +50,10 @@
       angular.forEach(feed.subs, function(key, val) {
         Feed.parseFeed(key.url)
         .then(function (res) {
-          feed.pages.push(res);
-          key.title = res.feed.title;
+          if (res.status="ok") {
+            feed.pages.push(res);
+            key.title = res.feed.title;
+          }
         });
       })
       console.log(feed.pages);
@@ -67,7 +69,7 @@
       parseFeed: function (url) {
         return $http.jsonp('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url))
         .then(function (res) { return res.data; })
-        .catch(function (err) {console.log(err); return null;});
+        .catch(function (err) {console.log(err);});
       }
     }
   }]);
