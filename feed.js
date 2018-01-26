@@ -8,9 +8,8 @@
     feed.popular = [
     {title:'Reddit Front Page', url:'https://www.reddit.com/.rss'},
     {title:'The Guardian', url:'https://www.theguardian.com/international/rss'},
-    {title:'CNN', url:'https://rss.cnn.com/rss/cnn_topstories.rss'},
     {title:'NY Times', url:'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'},
-    {title:'youtube', url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCBcRF18a7Qf58cCRy5xuWwQ'},
+    {title:'Casey Neistat', url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ'},
     ];
     feed.pages = [];
 
