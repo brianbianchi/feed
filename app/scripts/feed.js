@@ -54,9 +54,12 @@
       angular.forEach(feed.subs, function(key, val) {
         Feed.parseFeed(key.url)
         .then(function (res) {
-          if (res.status="ok") {
+          if (res.status=="ok") {
             feed.pages.push(res);
             key.title = res.feed.title;
+          } else {
+            alert("You have inserted an invalid rss url.");
+            feed.removeFeed(key, 'subs');
           }
         });
       })
@@ -72,8 +75,11 @@
     return {
       parseFeed: function (url) {
         return $http.jsonp('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(url))
-        .then(function (res) { return res.data; })
-        .catch(function (err) {console.log(err);});
+        .then(function successCallback(res) { 
+          return res.data; 
+        }, function failureCallback(res) {
+          return res.data
+        });
       }
     }
   }]);
