@@ -1,10 +1,11 @@
 (function (angular){
   'use strict';
 
-  angular.module('feedApp', ['sky', 'ngSanitize'])
-  .controller('FeedController', ['FeedService', function(Feed) {
+  angular.module('feedApp', ['sky', 'ngSanitize', 'ngCookies'])
+  .controller('FeedController', ['FeedService', '$cookieStore', function(Feed, $cookieStore) {
     var feed = this;
-    feed.subs = [];
+    feed.subs=$cookieStore.get('skyFeedSubs') || [];
+    feed.pages=$cookieStore.get('skyFeedPages') || [];
     feed.popular = [
     {title:'Reddit Front Page', url:'https://www.reddit.com/.rss'},
     {title:'/r/programming', url:'https://www.reddit.com/r/programming/.rss'},
@@ -16,7 +17,8 @@
     {title:'NY Times', url:'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'},
     {title:'Casey Neistat', url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ'},
     ];
-    feed.pages = [];
+
+    $cookieStore.put('myCookiesName', 'myCookiesValue');
 
     feed.addFeed = function(feedurl) {
       feed.subs.push({title:'', url:feedurl});
@@ -29,6 +31,7 @@
           }
         });
       });
+      //alert($cookieStore.get('myCookiesName'));
     };
 
     feed.removeFeed = function(removePage, arr) {
@@ -62,9 +65,18 @@
             feed.removeFeed(key, 'subs');
           }
         });
-      })
+      });
       console.log(feed.pages);
       console.log(feed.subs);
+    }
+
+    feed.putCookie = function() {
+      var today = new Date();
+      var expiresValue = new Date();
+      expiresValue.setDate(today.getDate()+30);
+      console.log(expiresValue);
+      $cookieStore.put('skyFeedSubs', feed.subs);
+      $cookieStore.put('skyFeedPages', feed.pages, { expires : expiresValue});
     }
 
     feed.displayFeed();
