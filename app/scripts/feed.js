@@ -18,8 +18,6 @@
     {title:'Casey Neistat', url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ'},
     ];
 
-    $cookieStore.put('myCookiesName', 'myCookiesValue');
-
     feed.addFeed = function(feedurl) {
       feed.subs.push({title:'', url:feedurl});
       feed.feedUrl = '';
@@ -31,7 +29,6 @@
           }
         });
       });
-      //alert($cookieStore.get('myCookiesName'));
     };
 
     feed.removeFeed = function(removePage, arr) {
@@ -75,7 +72,7 @@
       var expiresValue = new Date();
       expiresValue.setDate(today.getDate()+30);
       console.log(expiresValue);
-      $cookieStore.put('skyFeedSubs', feed.subs);
+      $cookieStore.put('skyFeedSubs', feed.subs, { expires : expiresValue});
       $cookieStore.put('skyFeedPages', feed.pages, { expires : expiresValue});
     }
 
