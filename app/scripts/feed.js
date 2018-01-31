@@ -1,11 +1,13 @@
 (function (angular){
   'use strict';
 
-  angular.module('feedApp', ['sky', 'ngSanitize', 'ngCookies'])
-  .controller('FeedController', ['FeedService', '$cookieStore', function(Feed, $cookieStore) {
+  angular.module('feedApp', ['sky', 'ngSanitize'])
+  .controller('FeedController', ['FeedService', function(Feed) {
+
     var feed = this;
-    feed.subs=$cookieStore.get('skyFeedSubs') || [];
-    feed.pages=$cookieStore.get('skyFeedPages') || [];
+
+    feed.subs = [];
+    feed.pages = [];
     feed.popular = [
     {title:'Reddit Front Page', url:'https://www.reddit.com/.rss'},
     {title:'/r/programming', url:'https://www.reddit.com/r/programming/.rss'},
@@ -36,7 +38,9 @@
         var oldArr = feed.subs;
         feed.subs = [];
         angular.forEach(oldArr, function(page) {
-          if (page != removePage) feed.subs.push(page);
+          if (page != removePage) {
+            feed.subs.push(page);
+          }
         });
         feed.displayFeed();
       }
@@ -44,7 +48,9 @@
         var oldArr = feed.popular;
         feed.popular = [];
         angular.forEach(oldArr, function(page) {
-          if (page.url != removePage.url) feed.popular.push(page);
+          if (page.url != removePage.url) {
+            feed.popular.push(page);
+          }
         });
       }
     };
@@ -67,15 +73,6 @@
       console.log(feed.subs);
     }
 
-    feed.putCookie = function() {
-      var today = new Date();
-      var expiresValue = new Date();
-      expiresValue.setDate(today.getDate()+30);
-      console.log(expiresValue);
-      $cookieStore.put('skyFeedSubs', feed.subs, { expires : expiresValue});
-      $cookieStore.put('skyFeedPages', feed.pages, { expires : expiresValue});
-    }
-
     feed.displayFeed();
 
   }]);
@@ -87,7 +84,7 @@
         .then(function successCallback(res) { 
           return res.data; 
         }, function failureCallback(res) {
-          return res.data
+          return res.data;
         });
       }
     }
