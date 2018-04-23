@@ -12,12 +12,9 @@
       <ul class="nav navbar-nav navbar-left">
         <li class="bb-navbar-active"><a href="">Feed</a></li>
         <li><a href="https://github.com/brianbianchi/angularjs-feed">Code</a></li>
-        <li><a href="https://skyux.developer.blackbaud.com/">SKY UX</a></li>
       </ul>
     </div>
   </bb-navbar>
-  
-
 
   <div class="container-fluid bb-page-content col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="FeedController as ctr">
 
@@ -83,13 +80,15 @@
         </div>
         <div id="{{'e'+$index}}" class="collapse in">
           <div class="panel-body" ng-repeat="element in page.items">
-            <p><a href="{{element.link}}" target="_blank">{{element.title}}</a>
-              <button ng-click="collapsed=!collapsed" data-toggle="collapse" data-target="#{{'d'+$index}}">
-              <span ng-class="{'glyphicon glyphicon-minus': collapsed, 'glyphicon glyphicon-plus': !collapsed}"></span> 
-            </button>
+            <p>
+                <button ng-click="collapsed=!collapsed" data-toggle="collapse" data-target="#{{'d'+$index}}">
+                    <span ng-class="{'glyphicon glyphicon-minus': collapsed, 'glyphicon glyphicon-plus': !collapsed}"></span> 
+                  </button>
+              <a href="{{element.link}}" target="_blank">{{element.title}}</a>
             <span id="{{'d'+$index}}" class="collapse" ng-bind-html="element.description"></span>
             <br><span class="small">{{element.pubDate}}</span>
-            <br><span class="small">Author: {{element.author}}</span></p>
+            <br><span class="small">Author: {{element.author}}</span
+            </p>
           </div>
         </div>
       </div>
@@ -98,6 +97,9 @@
 
   <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-sanitize.min.js"></script>
-  <script src="scripts/feed.js"></script>
+  <script src="js/app.module.js"></script>
+  <script src="js/app.controller.js"></script>
+  <script src="js/app.factory.js"></script>
+  <script src="js/app.config.js"></script>
 </body>
 </html>
