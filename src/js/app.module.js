@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('feedApp', ['sky', 'ngSanitize']);
+    .module('feedApp', ['ngSanitize']);
 
 })(angular);

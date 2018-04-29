@@ -4,12 +4,12 @@
   angular.module('feedApp')
     .controller('FeedController', ['FeedService', function (Feed) {
 
-      var feed = this;
+      var vm = this;
 
-      feed.subs = [];
-      feed.pages = [];
-      feed.popular = [
-        { title: 'Reddit Front Page', url: 'https://www.reddit.com/.rss' },
+      vm.subs = [
+        { title: 'Reddit Front Page', url: 'https://www.reddit.com/.rss' }];
+      vm.pages = [];
+      vm.popular = [
         { title: '/r/programming', url: 'https://www.reddit.com/r/programming/.rss' },
         { title: 'Hacker News', url: 'https://news.ycombinator.com/rss' },
         { title: 'A List Apart', url: 'https://feeds.feedburner.com/alistapart/main' },
@@ -20,60 +20,76 @@
         { title: 'Casey Neistat', url: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ' },
       ];
 
-      feed.addFeed = function (feedurl) {
-        feed.subs.push({ title: '', url: feedurl });
-        feed.feedUrl = '';
-        feed.displayFeed();
-        angular.forEach(feed.popular, function (popPage) {
-          angular.forEach(feed.subs, function (subPage) {
+      vm.addSubscription = function (url) {
+        vm.subs.push({ title: '', url: url });
+        vm.findDuplicate();
+        vm.displayFeed();
+      }
+
+      vm.removeSubscription = function (page) {
+        var subArr = vm.subs;
+        vm.subs = [];
+        angular.forEach(subArr, function (subPage) {
+          if (subPage != page) {
+            vm.subs.push(subPage);
+          } else {
+            vm.addPopular(subPage.title, subPage.url);
+          }
+        });
+        vm.displayFeed();
+      }
+
+      vm.addPopular = function (title, url) {
+        vm.popular.push({ title: title, url: url });
+      }
+
+      vm.removePopular = function (page) {
+        var popArr = vm.popular;
+        vm.popular = [];
+        angular.forEach(popArr, function (popPage) {
+          if (popPage.url != page.url) {
+            vm.popular.push(popPage);
+          }
+        });
+      }
+
+      vm.findDuplicate = function () {
+        angular.forEach(vm.popular, function (popPage) {
+          angular.forEach(vm.subs, function (subPage) {
             if (popPage.url == subPage.url) {
-              feed.removeFeed(popPage, 'popular');
+              vm.removePopular(popPage);
             }
           });
         });
-      };
+      }
 
-      feed.removeFeed = function (removePage, arr) {
-        if (arr == 'subs') {
-          var oldArr = feed.subs;
-          feed.subs = [];
-          angular.forEach(oldArr, function (page) {
-            if (page != removePage) {
-              feed.subs.push(page);
-            }
-          });
-          feed.displayFeed();
-        }
-        else if (arr == 'popular') {
-          var oldArr = feed.popular;
-          feed.popular = [];
-          angular.forEach(oldArr, function (page) {
-            if (page.url != removePage.url) {
-              feed.popular.push(page);
-            }
-          });
-        }
-      };
-
-      feed.displayFeed = function () {
-        feed.pages = [];
-        angular.forEach(feed.subs, function (key, val) {
+      vm.displayFeed = function () {
+        vm.pages = [];
+        angular.forEach(vm.subs, function (key, val) {
           Feed.parseFeed(key.url)
             .then(function (res) {
               if (res.status == "ok") {
-                feed.pages.push(res);
-                key.title = res.feed.title;
+                for (var i=0; i<res.items.length; i++){
+                  res.items[i].src = res.feed.title;
+                  res.items[i].srclink = res.feed.link;
+                  vm.pages.push(res.items[i]);
+                  key.title = res.feed.title;
+                }
               } else {
                 alert("You have inserted an invalid rss url.");
-                feed.removeFeed(key, 'subs');
+                vm.removeSubscription(key);
               }
             });
         });
-        console.log(feed.pages);
-        console.log(feed.subs);
       }
 
-      feed.displayFeed();
+      vm.dateSort = function () {
+        vm.pages = vm.pages.sort(function(a,b){
+          return new Date(b.pubDate) - new Date(a.pubDate);
+        });
+      }
+
+      vm.displayFeed();
 
     }]);
 

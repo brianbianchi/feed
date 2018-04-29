@@ -1,105 +1,177 @@
 <!doctype html>
-<html charset="utf-8" ng-app="feedApp" ng-cloak>
+<html lang="en" ng-app="feedApp" ng-cloak>
+
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Sky feed</title>
-  <link rel="stylesheet" href="https://sky.blackbaudcdn.net/skyux/1.19.1/css/sky-bundle.css" integrity="sha384-rCHAZzIqFLwC6z0rrDMyjB4UNDV5LX7dkYYVMNba0hMetsGOLkd0WXF7DZYjzWkh" crossorigin="anonymous">
+  <title>AngularJS Feed</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+    crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="styles/styles.css">
 </head>
+
 <body>
-  <bb-navbar>
-    <div class="container-fluid col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
-      <ul class="nav navbar-nav navbar-left">
-        <li class="bb-navbar-active"><a href="">Feed</a></li>
-        <li><a href="https://github.com/brianbianchi/angularjs-feed">Code</a></li>
+  <!-- Nav -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <i class="navbar-brand fa fa-rss fa-2x" aria-hidden="true" data-toggle="modal" data-target="#exampleModal"></i>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Feed</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Code</a>
+        </li>
       </ul>
     </div>
-  </bb-navbar>
+  </nav>
 
-  <div class="container-fluid bb-page-content col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2" ng-controller="FeedController as ctr">
-
-    <div class="text-center">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Configure Subscriptions </button>
-    </div>
+  <div class="container-fluid" ng-controller="FeedController as ctr">
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">Subscriptions</h2>
+            <h4 class="modal-title" id="exampleModalLabel">Subscriptions</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <h2>Current</h2>
+            <h4>Current</h4>
             <div ng-repeat="sub in ctr.subs">
               <div class="input-group">
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-primary" ng-click="ctr.removeFeed(sub, 'subs')"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
                 </span>
-                &nbsp;&nbsp;&nbsp;<span class="" ng-bind-html="sub.title"></span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="" ng-bind-html="sub.title"></span>
               </div>
             </div>
-            <form ng-submit="ctr.addFeed(ctr.feedUrl)">
+            <br>
+            <h4>Custom</h4>
+            <form ng-submit="ctr.addSubscription(ctr.feedUrl)">
               <div class="input-group">
                 <span class="input-group-btn">
-                  <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                  <button type="button" class="btn btn-outline-primary" type="submit"> + </button>
                 </span>
-                <input type="text" class="form-control" ng-model="ctr.feedUrl"  size="30" placeholder="add custom rss url here">
+                <input type="text" class="form-control" ng-model="ctr.feedUrl" size="30" placeholder="Add custom RSS feed URL here.">
               </div>
-            </form> 
-          </div>
-          <div class="modal-footer">
-            <h2>Popular</h2>
+            </form>
+            <br>
+            <h4>Popular</h4>
             <div ng-repeat="page in ctr.popular">
               <div class="input-group">
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-primary" ng-click="ctr.addFeed(page.url)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.addSubscription(page.url)"> + </button>
                 </span>
                 <span class="">&nbsp;&nbsp;&nbsp;{{page.title}}</span>
               </div>
             </div>
+            <br>
+            <h4><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
+            <div class="input-group">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
+                </span>
+                &nbsp;&nbsp;&nbsp;
+                By Date
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
 
-    <br><br><hr><br>
+    <div class="row">
 
-    <div class="row-fluid" ng-repeat="page in ctr.pages">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-toggle="collapse" data-target="#{{'e'+$index}}">
-            <a href="{{page.feed.link}}" ng-bind-html="page.feed.title" target="_blank"></a>
-            <span class="glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
-          </h3>
-        </div>
-        <div id="{{'e'+$index}}" class="collapse in">
-          <div class="panel-body" ng-repeat="element in page.items">
-            <p>
-                <button ng-click="collapsed=!collapsed" data-toggle="collapse" data-target="#{{'d'+$index}}">
-                    <span ng-class="{'glyphicon glyphicon-minus': collapsed, 'glyphicon glyphicon-plus': !collapsed}"></span> 
-                  </button>
-              <a href="{{element.link}}" target="_blank">{{element.title}}</a>
-            <span id="{{'d'+$index}}" class="collapse" ng-bind-html="element.description"></span>
-            <br><span class="small">{{element.pubDate}}</span>
-            <br><span class="small">Author: {{element.author}}</span
-            </p>
-          </div>
+      <!-- Feed Items -->
+      <div class="col-md-8">
+        <!--<span class="small">{{ctr.pages}}</span> -->
+        <div ng-repeat="page in ctr.pages">
+          <a href="{{page.link}}" ng-bind-html="page.title" target="_blank"></a>
+          <br>
+          <span class="small">
+            <a href="{{page.srclink}}" ng-bind-html="page.src" target="_blank"></a>
+            <br> {{page.pubDate}}
+            <br> Author: {{page.author}}
+          </span>
+          <br>
+          <hr>
+          <br>
         </div>
       </div>
+
+      <!-- Right column -->
+      <div class="col-4 d-none d-md-block">
+        <h4>Current</h4>
+        <div ng-repeat="sub in ctr.subs">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
+            </span>
+            &nbsp;&nbsp;&nbsp;
+            <span class="" ng-bind-html="sub.title"></span>
+          </div>
+        </div>
+        <br>
+        <h4>Custom</h4>
+        <form ng-submit="ctr.addSubscription(ctr.feedUrl)">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-outline-primary" type="submit"> + </button>
+            </span>
+            <input type="text" class="form-control" ng-model="ctr.feedUrl" size="30" placeholder="Add custom RSS feed URL here.">
+          </div>
+        </form>
+        <br>
+        <h4>Popular</h4>
+        <div ng-repeat="page in ctr.popular">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-outline-primary" ng-click="ctr.addSubscription(page.url)"> + </button>
+            </span>
+            <span class="">&nbsp;&nbsp;&nbsp;{{page.title}}</span>
+          </div>
+        </div>
+        <br>
+        <h4><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
+            </span>
+            &nbsp;&nbsp;&nbsp;
+            By Date
+          </div>
+      </div>
+
     </div>
   </div>
 
-  <script src="https://sky.blackbaudcdn.net/skyux/1.19.1/js/sky-bundle.min.js" integrity="sha384-TjOyf6+7MiWfLrlmRaaGb7AreBGYuTcHrzxNuGLiu2c8PLej39dD7S4zYnBH6tax" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-sanitize.min.js"></script>
   <script src="js/app.module.js"></script>
   <script src="js/app.controller.js"></script>
   <script src="js/app.factory.js"></script>
   <script src="js/app.config.js"></script>
+  <script src="js/custom.js"></script>
+
 </body>
+
 </html>
