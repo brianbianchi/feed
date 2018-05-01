@@ -27,7 +27,7 @@
           <a class="nav-link" href="#">Feed</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Code</a>
+          <a class="nav-link" href="https://github.com/brianbianchi/angularjs-feed" target="_blank">Code</a>
         </li>
       </ul>
     </div>
@@ -51,9 +51,9 @@
               <div class="input-group">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
+                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)"> <i class="fa fa-sort-asc" aria-hidden="true"></i> </button>
                 </span>
-                &nbsp;&nbsp;&nbsp;
-                <span class="" ng-bind-html="sub.title"></span>
+                <span class="form-control border-0" ng-bind-html="sub.title"></span>
               </div>
             </div>
             <br>
@@ -73,7 +73,7 @@
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-outline-primary" ng-click="ctr.addSubscription(page.url)"> + </button>
                 </span>
-                <span class="">&nbsp;&nbsp;&nbsp;{{page.title}}</span>
+                <span class="form-control border-0">{{page.title}}</span>
               </div>
             </div>
             <br>
@@ -82,8 +82,7 @@
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
                 </span>
-                &nbsp;&nbsp;&nbsp;
-                By Date
+                <span class="form-control border-0">By Date</span>
               </div>
           </div>
           <div class="modal-footer">
@@ -119,9 +118,9 @@
           <div class="input-group">
             <span class="input-group-btn">
               <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
+              <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)"> <i class="fa fa-sort-asc" aria-hidden="true"></i> </button>
             </span>
-            &nbsp;&nbsp;&nbsp;
-            <span class="" ng-bind-html="sub.title"></span>
+            <span class="form-control border-0" ng-bind-html="sub.title"></span>
           </div>
         </div>
         <br>
@@ -141,7 +140,7 @@
             <span class="input-group-btn">
               <button type="button" class="btn btn-outline-primary" ng-click="ctr.addSubscription(page.url)"> + </button>
             </span>
-            <span class="">&nbsp;&nbsp;&nbsp;{{page.title}}</span>
+            <span class="form-control border-0">{{page.title}}</span>
           </div>
         </div>
         <br>
@@ -150,8 +149,7 @@
             <span class="input-group-btn">
               <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
             </span>
-            &nbsp;&nbsp;&nbsp;
-            By Date
+            <span class="form-control border-0">By Date</span>
           </div>
       </div>
 

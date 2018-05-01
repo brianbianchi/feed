@@ -89,6 +89,30 @@
         });
       }
 
+      vm.orderSubs = function (topSub) {
+        var subArr = vm.subs;
+        vm.subs = [];
+        vm.subs.push({ title: topSub.title, url: topSub.url });
+        angular.forEach(subArr, function (subPage) {
+          if (subPage != topSub) {
+            vm.subs.push(subPage);
+          }
+        });
+        var pagesArr = vm.pages;
+        vm.pages = [];
+        var lastPages = [];
+        angular.forEach(pagesArr, function (page) {
+          if(page.src == topSub.title) {
+            vm.pages.push(page);
+          } else {
+            lastPages.push(page);
+          }
+        });
+        angular.forEach(lastPages, function (page) {
+          vm.pages.push(page);
+        });
+      }
+
       vm.displayFeed();
 
     }]);
