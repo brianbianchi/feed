@@ -98,7 +98,7 @@
       <div class="col-md-8">
         <!--<span class="small">{{ctr.pages}}</span> -->
         <div ng-repeat="page in ctr.pages">
-          <a href="{{page.link}}" ng-bind-html="page.title" target="_blank"></a>
+          <a href="{{page.link}}" ng-bind-html="page.title" target="_blank" tabindex="{{$index+1}}"></a>&nbsp;&nbsp;<i class="arrow left"></i>
           <br>
           <span class="small">
             <a href="{{page.srclink}}" ng-bind-html="page.src" target="_blank"></a>

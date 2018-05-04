@@ -69,7 +69,7 @@
           Feed.parseFeed(key.url)
             .then(function (res) {
               if (res.status == "ok") {
-                for (var i=0; i<res.items.length; i++){
+                for (var i = 0; i < res.items.length; i++) {
                   res.items[i].src = res.feed.title;
                   res.items[i].srclink = res.feed.link;
                   vm.pages.push(res.items[i]);
@@ -84,25 +84,20 @@
       }
 
       vm.dateSort = function () {
-        vm.pages = vm.pages.sort(function(a,b){
+        vm.pages = vm.pages.sort(function (a, b) {
           return new Date(b.pubDate) - new Date(a.pubDate);
         });
       }
 
       vm.orderSubs = function (topSub) {
-        var subArr = vm.subs;
-        vm.subs = [];
-        vm.subs.push({ title: topSub.title, url: topSub.url });
-        angular.forEach(subArr, function (subPage) {
-          if (subPage != topSub) {
-            vm.subs.push(subPage);
-          }
-        });
+
+        vm.subs.sort((x, xs) => xs.url === topSub.url);
+
         var pagesArr = vm.pages;
         vm.pages = [];
         var lastPages = [];
         angular.forEach(pagesArr, function (page) {
-          if(page.src == topSub.title) {
+          if (page.src == topSub.title) {
             vm.pages.push(page);
           } else {
             lastPages.push(page);
