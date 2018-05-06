@@ -84,7 +84,7 @@
       }
 
       vm.dateSort = function () {
-        vm.pages = vm.pages.sort(function (a, b) {
+        vm.pages.sort(function (a, b) {
           return new Date(b.pubDate) - new Date(a.pubDate);
         });
       }
@@ -93,19 +93,8 @@
 
         vm.subs.sort((x, xs) => xs.url === topSub.url);
 
-        var pagesArr = vm.pages;
-        vm.pages = [];
-        var lastPages = [];
-        angular.forEach(pagesArr, function (page) {
-          if (page.src == topSub.title) {
-            vm.pages.push(page);
-          } else {
-            lastPages.push(page);
-          }
-        });
-        angular.forEach(lastPages, function (page) {
-          vm.pages.push(page);
-        });
+        let titles = vm.subs.map(s => s.title);
+        vm.pages.sort((x,xs) => titles.indexOf(x.src) - titles.indexOf(xs.src));
       }
 
       vm.displayFeed();
