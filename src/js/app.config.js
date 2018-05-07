@@ -8,5 +8,4 @@
       $sceDelegateProvider.resourceUrlWhitelist(['**']);
     });
 
-
 })(angular);

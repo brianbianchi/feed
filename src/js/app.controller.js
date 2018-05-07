@@ -20,12 +20,18 @@
         { title: 'Casey Neistat', url: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ' },
       ];
 
+      /*
+       * Adds a feed object to the subscriptions array.
+       */
       vm.addSubscription = function (url) {
         vm.subs.push({ title: '', url: url });
         vm.findDuplicate();
         vm.displayFeed();
       }
 
+      /*
+       * Removes a feed object from the subscriptions array.
+       */
       vm.removeSubscription = function (page) {
         var subArr = vm.subs;
         vm.subs = [];
@@ -39,10 +45,16 @@
         vm.displayFeed();
       }
 
+      /*
+       * Adds a feed object to the 'popular' subscriptions array.
+       */
       vm.addPopular = function (title, url) {
         vm.popular.push({ title: title, url: url });
       }
 
+      /*
+       * Removes a feed object from the 'popular' subscriptions array.
+       */
       vm.removePopular = function (page) {
         var popArr = vm.popular;
         vm.popular = [];
@@ -53,6 +65,9 @@
         });
       }
 
+      /*
+       * Removes a duplicate page from the 'popular' subscription array.
+       */
       vm.findDuplicate = function () {
         angular.forEach(vm.popular, function (popPage) {
           angular.forEach(vm.subs, function (subPage) {
@@ -63,6 +78,9 @@
         });
       }
 
+      /*
+       * Makes a Get request to each subscription and populates the 'pages' array with the response.
+       */
       vm.displayFeed = function () {
         vm.pages = [];
         angular.forEach(vm.subs, function (key, val) {
@@ -83,18 +101,23 @@
         });
       }
 
+      /*
+       * Sort 'pages' array by date.
+       */
       vm.dateSort = function () {
         vm.pages.sort(function (a, b) {
           return new Date(b.pubDate) - new Date(a.pubDate);
         });
       }
 
+      /*
+       * Re-order 'subs' and 'pages' arrays.
+       */
       vm.orderSubs = function (topSub) {
-
         vm.subs.sort((x, xs) => xs.url === topSub.url);
 
         let titles = vm.subs.map(s => s.title);
-        vm.pages.sort((x,xs) => titles.indexOf(x.src) - titles.indexOf(xs.src));
+        vm.pages.sort((x, xs) => titles.indexOf(x.src) - titles.indexOf(xs.src));
       }
 
       vm.displayFeed();
