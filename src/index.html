@@ -51,7 +51,9 @@
               <div class="input-group">
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
-                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)"> <i class="fa fa-sort-asc" aria-hidden="true"></i> </button>
+                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)">
+                    <i class="fa fa-sort-asc" aria-hidden="true"></i>
+                  </button>
                 </span>
                 <span class="form-control border-0" ng-bind-html="sub.title"></span>
               </div>
@@ -77,13 +79,16 @@
               </div>
             </div>
             <br>
-            <h4><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
+            <h4>
+              <i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
             <div class="input-group">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
-                </span>
-                <span class="form-control border-0">By Date</span>
-              </div>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </button>
+              </span>
+              <span class="form-control border-0">By Date</span>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -98,7 +103,8 @@
       <div class="col-md-8">
         <!--<span class="small">{{ctr.pages}}</span> -->
         <div ng-repeat="page in ctr.pages">
-          <a href="{{page.link}}" ng-bind-html="page.title" target="_blank" tabindex="{{$index+1}}"></a>&nbsp;&nbsp;<i class="arrow"></i>
+          <a href="{{page.link}}" ng-bind-html="page.title" target="_blank" tabindex="{{$index+1}}"></a>&nbsp;&nbsp;
+          <i class="arrow"></i>
           <br>
           <span class="small">
             <a href="{{page.srclink}}" ng-bind-html="page.src" target="_blank"></a>
@@ -118,7 +124,9 @@
           <div class="input-group">
             <span class="input-group-btn">
               <button type="button" class="btn btn-outline-primary" ng-click="ctr.removeSubscription(sub)"> - </button>
-              <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)"> <i class="fa fa-sort-asc" aria-hidden="true"></i> </button>
+              <button type="button" class="btn btn-outline-primary" ng-click="ctr.orderSubs(sub)">
+                <i class="fa fa-sort-asc" aria-hidden="true"></i>
+              </button>
             </span>
             <span class="form-control border-0" ng-bind-html="sub.title"></span>
           </div>
@@ -144,13 +152,16 @@
           </div>
         </div>
         <br>
-        <h4><i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
+        <h4>
+          <i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sort</h4>
         <div class="input-group">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()"> <i class="fa fa-calendar" aria-hidden="true"></i> </button>
-            </span>
-            <span class="form-control border-0">By Date</span>
-          </div>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-outline-primary" ng-click="ctr.dateSort()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+          <span class="form-control border-0">By Date</span>
+        </div>
       </div>
 
     </div>
