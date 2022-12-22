@@ -10,5 +10,7 @@ New RSS URL suggestions are welcome. Please submit a PR.
 ## deploy
 
 ```console
-git subtree push --prefix dist origin gh-pages
+$ git add dist -f
+$ git commit -m "Adding dist"
+$ git subtree push --prefix dist origin gh-pages
 ```

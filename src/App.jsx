@@ -25,7 +25,6 @@ function App() {
     }
     subs.forEach((sub, index) => {
       let url = `https://api.rss2json.com/v1/api.json?callback=JSON_CALLBACK&rss_url=${encodeURIComponent(sub.url)}`;
-      console.log({ index, url });
       try {
         jsonp(url, (err, data) => {
           if (err) {
@@ -40,7 +39,7 @@ function App() {
           setPages(pages.concat(items));
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     });
   };
