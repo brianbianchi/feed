@@ -3,6 +3,7 @@ export const feeds = [
     { title: "/r/programming", url: "https://www.reddit.com/r/programming/.rss" },
     { title: "/r/ProgrammerHumor", url: "https://www.reddit.com/r/ProgrammerHumor/.rss" },
     { title: "Hacker News", url: "https://news.ycombinator.com/rss" },
+    { title: "Melting asphalt", url: "https://feeds.feedburner.com/MeltingAsphalt" },
     { title: "levels.io", url: "https://levels.io/rss/" },
     { title: "Barking up the wrong tree [Eric Barker]", url: "https://bakadesuyo.com/feed/" },
     { title: "Wait but why", url: "https://waitbutwhy.com/feed" },
