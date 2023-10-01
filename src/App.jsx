@@ -4,26 +4,39 @@ import { feeds } from "./data/feeds";
 import { getFeedData } from "./data/helper";
 
 function App() {
+  const localStorageKey = "bbfeedsubs";
+
   const [pages, setPages] = useState([]);
-  const [subs, setSubs] = useState([]);
-  const [recommended, setRecommended] = useState(feeds);
+  const [subs, setSubs] = useState(JSON.parse(localStorage.getItem(localStorageKey)) ?? []);
+  const [recommended, setRecommended] = useState(() => {
+    if (subs.length === 0) {
+      return feeds;
+    }
+    return feeds.filter((rec) => !subs.some((sub) => sub.title === rec.title));
+  });
   const [error, setError] = useState(null);
 
-  const addSub = useCallback((item) => {
-    setSubs((prevSubs) => [...prevSubs, item]);
+  const addSub = (item) => {
+    const newSubs = [...subs, item];
+    setSubs(newSubs);
+    localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
     setRecommended((prevRecommended) => prevRecommended.filter((obj) => obj.title !== item.title));
-  }, []);
+  };
 
-  const removeSub = useCallback((item) => {
+  const removeSub = (item) => {
     setRecommended((prevRecommended) => [...prevRecommended, item]);
-    setSubs((prevSubs) => prevSubs.filter((obj) => obj.title !== item.title));
-  }, []);
+    const newSubs = subs.filter((obj) => obj.title !== item.title);
+    setSubs(newSubs);
+    localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
+  };
 
   useEffect(() => {
     const controller = new AbortController();
     async function fetchData() {
       if (!subs.length) {
-        setPages([]);
+        if (pages.length > 0) {
+          setPages([]);
+        }
         return;
       }
 
