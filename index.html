@@ -2,15 +2,31 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/x-icon" href="/rss.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RSS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Reader</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+    <h2 onclick="toggleContent(this)">Subscriptions</h2>
+    <span id="subscriptions">
+        <small id="noSubs">You have no subscriptions. Add a recommended RSS feed or enter a custom RSS URL.</small>
+        <ul id="subscriptionList"></ul>
+    </span>
+
+    <h2 onclick="toggleContent(this)">Feeds</h2>
+    <span id="feeds">
+        <div>
+            <input type="text" id="rssUrl" placeholder="Enter a custom RSS feed URL">
+            <button onclick="addCustomRssUrl()">Add</button>
+        </div>
+        <ul id="recommendedList"></ul>
+    </span>
+
+    <div id="articles"></div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

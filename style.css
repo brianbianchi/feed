@@ -1,0 +1,24 @@
+body {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    margin: 20px;
+}
+
+#rssList {
+    margin-bottom: 20px;
+}
+
+.rss-item {
+    margin-bottom: 10px;
+}
+
+.rss-item button {
+    margin-left: 10px;
+}
+
+.article {
+    margin-top: 10px;
+}
+
+h2 {
+    cursor: pointer;
+}
