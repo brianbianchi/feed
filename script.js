@@ -4,14 +4,27 @@ const recommended = [
     "https://www.reddit.com/.rss",
     "https://www.reddit.com/r/programming/.rss",
     "https://www.reddit.com/r/ProgrammerHumor/.rss",
-    "https://news.ycombinator.com/rss",
-    "https://feeds.feedburner.com/MeltingAsphalt",
     "https://levels.io/rss/",
     "https://bakadesuyo.com/feed/",
     "https://waitbutwhy.com/feed",
+    "https://feeds.feedblitz.com/sethsblog&x=1",
+    "https://news.ycombinator.com/rss",
+    "https://feeds.feedburner.com/MeltingAsphalt",
     "https://openai.com/blog/rss/",
-    "https://nitter.net/naval/rss",
-    "https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ"
+    "https://css-tricks.com/feed/",
+    "https://dev.to/feed/",
+    "https://blog.logrocket.com/feed/",
+    "https://rachelbythebay.com/w/atom.xml",
+    "https://web.dev/feed.xml",
+    "https://netflixtechblog.com/feed",
+    "https://alistapart.com/main/feed/",
+    "https://blog.codinghorror.com/rss/",
+    "https://fs.blog/blog/feed/",
+    "http://www.aaronsw.com/2002/feeds/pgessays.rss",
+    "https://www.joelonsoftware.com/feed/",
+    "https://lethain.com/feeds.xml",
+    "https://staffeng.com/rss",
+    "https://blog.samaltman.com/posts.atom"
 ];
 let articles = []
 
