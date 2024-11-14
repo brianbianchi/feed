@@ -1,6 +1,5 @@
 const apiEndpoint = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const localStorageKey = "bbfeedsubs";
-const subs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 const recommended = [
     "https://www.reddit.com/.rss",
     "https://www.reddit.com/r/programming/.rss",
@@ -14,57 +13,56 @@ const recommended = [
     "https://nitter.net/naval/rss",
     "https://www.youtube.com/feeds/videos.xml?channel_id=UCtinbF-Q-fVthA0qrFQTgXQ"
 ];
+let articles = []
 
-subs.forEach(url => subscribe(url, null));
+const init = async () => {
+    const subs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    for (const url of subs) {
+        document.getElementById('subscriptionList')
+            .appendChild(createRssItem(url, true));
+        toggleSubWarning(subs);
+        await fetchArticles(url);
+    }
+    articles.sort((a, b) => new Date(a.date) - new Date(b.date));
+    displayArticles();
 
-recommended.forEach(url => {
-    if (!subs.includes(url)) displayFeed(url)
-});
+    for (const url of recommended) {
+        if (!subs.includes(url)) {
+            document.getElementById('recommendedList')
+                .appendChild(createRssItem(url, false));
+        }
+    }
+}
+init();
+
+// ----------------- HTML -----------------
 
 function addCustomRssUrl() {
     const urlInput = document.getElementById('rssUrl');
-    const rssUrl = urlInput.value.trim();
+    const url = urlInput.value.trim();
 
-    if (rssUrl) {
-        displayFeed(rssUrl);
+    if (url) {
+        document.getElementById('subscriptionList')
+            .appendChild(createRssItem(url, true));
         urlInput.value = '';
     }
 }
 
-function createRssItem(rssUrl, isSubscribed) {
-    const rssItem = document.createElement('li');
-    rssItem.className = 'rss-item';
-    rssItem.innerHTML = `
-        <span>${rssUrl}</span>
-        ${isSubscribed ?
-            `<button onclick="fetchArticles('${rssUrl}')">Get Articles</button>
-            <button onclick="unsubscribe('${rssUrl}', this)">Unsubscribe</button>` :
-            `<button onclick="subscribe('${rssUrl}', this)">Subscribe</button>`}
-    `;
-    return rssItem;
-}
+async function subscribe(url, button) {
+    const subs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    const newSubs = [...subs, url];
+    localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
 
-function displayFeed(url) {
-    const rssItem = createRssItem(url, false);
-    document.getElementById('recommendedList').appendChild(rssItem);
-}
+    document.getElementById('recommendedList')
+        .removeChild(button.parentElement);
 
-function subscribe(url, button) {
-    if (button) {
-        const subs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-        const newSubs = [...subs, url];
-        localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
+    document.getElementById('subscriptionList')
+        .appendChild(createRssItem(url, true));
+    toggleSubWarning(newSubs);
 
-        const recommendedList = document.getElementById('recommendedList');
-        recommendedList.removeChild(button.parentElement);
-    }
-
-    const rssItem = createRssItem(url, true);
-    document.getElementById('subscriptionList').appendChild(rssItem);
-    const warning = document.getElementById('noSubs');
-    if (warning.style.display === '' || warning.style.display === 'block') {
-        warning.style.display = 'none';
-    }
+    await fetchArticles(url);
+    articles.sort((a, b) => new Date(a.date) - new Date(b.date));
+    displayArticles();
 }
 
 function unsubscribe(url, button) {
@@ -72,8 +70,31 @@ function unsubscribe(url, button) {
     const newSubs = subs.filter((sub) => sub !== url);
     localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
 
-    const subscriptionList = document.getElementById('subscriptionList');
-    subscriptionList.removeChild(button.parentElement);
+    document.getElementById('subscriptionList').removeChild(button.parentElement);
+    toggleSubWarning(newSubs);
+
+    articles = articles.filter((article) => article.feedUrl !== url);
+    document.getElementById('articles').innerHTML = '';
+    displayArticles();
+}
+
+function toggleContent(header) {
+    const content = header.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+}
+
+// ----------------- Helper -----------------
+
+function createRssItem(rssUrl, isSubscribed) {
+    const rssItem = document.createElement('li');
+    rssItem.className = 'rss-item';
+    rssItem.innerHTML = `
+        <span>${rssUrl}</span>
+        ${isSubscribed ?
+            `<button onclick="unsubscribe('${rssUrl}', this)">Unsubscribe</button>` :
+            `<button onclick="subscribe('${rssUrl}', this)">Subscribe</button>`}
+    `;
+    return rssItem;
 }
 
 async function fetchArticles(rssUrl) {
@@ -84,38 +105,55 @@ async function fetchArticles(rssUrl) {
             console.error('Error fetching articles:', data.message);
             return;
         }
-        displayArticles(data);
+        const feedUrl = data.feed.url;
+        const feedTitle = data.feed.title;
+        data.items.forEach(article => {
+            if (!isWithinLast7Days(article.pubDate)) return;
+            articles.push({
+                feedUrl: feedUrl,
+                feedTitle: feedTitle,
+                date: new Date(article.pubDate),
+                link: article.link,
+                title: article.title
+            })
+        });
     } catch (error) {
         console.error(error);
     }
 }
 
-function displayArticles(res) {
+function displayArticles() {
     const articlesDiv = document.getElementById('articles');
-    if (!articlesDiv.innerHTML) {
-        articlesDiv.innerHTML += `<h2 onclick="toggleContent(this)">Articles</h2>
+    if (articles.length && !articlesDiv.innerHTML) {
+        articlesDiv.innerHTML += `<h2 onclick="toggleContent(this)">Articles &#11021;</h2>
                                     <ul id="articleList"></ul>`;
     }
-
-    res.items.forEach(article => {
-        const articleItem = createArticleItem(article, res.feed.title)
-        document.getElementById('articleList').appendChild(articleItem);
+    articles.forEach(article => {
+        document.getElementById('articleList')
+            .appendChild(createArticleItem(article));
     });
 }
 
-function createArticleItem(article, title) {
+function createArticleItem(article) {
     const articleItem = document.createElement('li');
     articleItem.className = 'article';
     articleItem.innerHTML = `
         <a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a>
         <br />
-        ${title} <br />
-        ${article.author} ${new Date(article.pubDate).toLocaleDateString("en-US")} <hr />
+        ${article.feedTitle} <br />
+        ${article.author} ${new Date(article.date).toLocaleDateString("en-US")} <hr />
     `;
     return articleItem;
 }
 
-function toggleContent(header) {
-    const content = header.nextElementSibling;
-    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+function toggleSubWarning(subs) {
+    const warning = document.getElementById('noSubs');
+    warning.style.display = subs.length ? 'none' : 'block';
+}
+
+function isWithinLast7Days(date) {
+    const currentDate = new Date();
+    const sevenDaysAgo = new Date().setDate(currentDate.getDate() - 7);
+    const inputDate = new Date(date);
+    return inputDate >= sevenDaysAgo && inputDate <= currentDate;
 }
