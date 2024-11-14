@@ -37,7 +37,7 @@ init();
 
 // ----------------- HTML -----------------
 
-function addCustomRssUrl() {
+async function addCustomRssUrl() {
     const urlInput = document.getElementById('rssUrl');
     const url = urlInput.value.trim();
 
@@ -45,6 +45,14 @@ function addCustomRssUrl() {
         document.getElementById('subscriptionList')
             .appendChild(createRssItem(url, true));
         urlInput.value = '';
+
+        const subs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+        const newSubs = [...subs, url];
+        localStorage.setItem(localStorageKey, JSON.stringify(newSubs));
+        toggleSubWarning(newSubs);
+        await fetchArticles(url);
+        articles.sort((a, b) => new Date(a.date) - new Date(b.date));
+        displayArticles();
     }
 }
 
@@ -106,12 +114,15 @@ async function fetchArticles(rssUrl) {
             return;
         }
         const feedUrl = data.feed.url;
+        const feedLink = data.feed.link;
         const feedTitle = data.feed.title;
         data.items.forEach(article => {
             if (!isWithinLast7Days(article.pubDate)) return;
             articles.push({
-                feedUrl: feedUrl,
-                feedTitle: feedTitle,
+                feedLink,
+                feedUrl,
+                feedTitle,
+                author: article.author,
                 date: new Date(article.pubDate),
                 link: article.link,
                 title: article.title
@@ -140,7 +151,8 @@ function createArticleItem(article) {
     articleItem.innerHTML = `
         <a href="${article.link}" target="_blank" rel="noopener noreferrer">${article.title}</a>
         <br />
-        ${article.feedTitle} <br />
+        <a href="${article.feedLink}" target="_blank" rel="noopener noreferrer">${article.feedTitle}</a>
+        <br />
         ${article.author} ${new Date(article.date).toLocaleDateString("en-US")} <hr />
     `;
     return articleItem;
